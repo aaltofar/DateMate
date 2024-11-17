@@ -1,53 +1,54 @@
 import { loadDates, addDateIdea } from './repository.js';
 import { login, clearSession, restoreSession } from './auth.js';
-
-const app = document.getElementById('app');
-let dates = [];
 const dateIdeasPlaceholders = [
     {
-        title: "Dumpster Fire Picnic for Two",
+        ideaTitle: "Dumpster Fire Picnic for Two",
         description: "Romantic dinner over a flaming trash can—BYO weird snacks and weird vibes."
     },
     {
-        title: "Pothole Plunge",
+        ideaTitle: "Pothole Plunge",
         description: "Hold hands while tripping over potholes. Bonus points for not breaking any bones."
     },
     {
-        title: "Rat Romance Rendezvous",
+        ideaTitle: "Rat Romance Rendezvous",
         description: "For when a rat infestation is just the ambiance you crave."
     },
     {
-        title: "Forbidden Swamp Fondue",
+        ideaTitle: "Forbidden Swamp Fondue",
         description: "A cauldron of melted cheese… and whatever else we can find lying around."
     },
     {
-        title: "Lost in the Sewer",
+        ideaTitle: "Lost in the Sewer",
         description: "Get completely, hopelessly lost in the sewer. Bring snacks and zero common sense."
     },
     {
-        title: "Mystery Slime Wrestling",
+        ideaTitle: "Mystery Slime Wrestling",
         description: "Get ready for a slippery, slimy showdown where no one wins, and dignity is optional."
     },
     {
-        title: "Dumpster Goblin Disco",
+        ideaTitle: "Dumpster Goblin Disco",
         description: "Dance under the dim glow of broken streetlights while digging for treasures of dubious origin."
     },
     {
-        title: "Stolen Wheelbarrow Rides",
+        ideaTitle: "Stolen Wheelbarrow Rides",
         description: "Hold on for dear life as we barrel down hills in a stolen wheelbarrow. Crash landing guaranteed."
     },
     {
-        title: "Graveyard Grab Bag",
+        ideaTitle: "Graveyard Grab Bag",
         description: "Close your eyes, reach into the grave dirt, and hope you don’t grab anything… squirmy."
     },
     {
-        title: "Back Alley Opera",
+        ideaTitle: "Back Alley Opera",
         description: "Sing like no one’s watching (they are) in an alley where everything echoes and smells strange."
     }
 ];
+const app = document.getElementById('app');
+let dates = [];
+let demo = false;
 
-export async function renderMainView() {
-    dates = await loadDates();
+export async function renderMainView(demoMode = false) {
+    demo = demoMode
+    dates = await loadDates(demoMode);
     const dateCards = dates.map((date, index) => `
         <div class="carousel-item ${index === 0 ? 'active' : ''}">
             <div class="card shadow-lg mx-auto" style="width: 300px;">
@@ -110,7 +111,8 @@ export function renderAddDateView() {
     </div>
     </div>
     `;
-
+if (demo)
+    return;
     document.getElementById('addDateForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('dateTitle').value;
