@@ -1,5 +1,9 @@
-let api = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kd2Z0aG9ld211dWFlaW1hd2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzExNjUyMjAsImV4cCI6MjA0Njc0MTIyMH0.mJKZ7yaaWRgd8AuT0mLZyiAhoIa9-bv0DdftW1oAQ2c"
+// views.js
+import { loadDates, addDateIdea } from './repository.js';
+import { login, clearSession, restoreSession } from './auth.js';
+
 const app = document.getElementById('app');
+let dates = [];
 const dateIdeasPlaceholders = [
     {
         title: "Dumpster Fire Picnic for Two",
@@ -43,51 +47,20 @@ const dateIdeasPlaceholders = [
     }
 ];
 
-
-const sbClient = supabase.createClient("https://mdwfthoewmuuaeimawbz.supabase.co", api);
-
-// Initialize app with session check
-(async function init() {
-    const session = getSessionFromStorage();
-    if (session) {
-        console.log(session)
-        const { data, error } = await sbClient.auth.setSession(session);
-        if (!error && data.user) {
-            await initApp();  // User session is valid, load the main view
-        } else {
-            clearSession();
-            loginView();  // Invalid session, show login view
-        }
-    } else {
-        loginView();  // No session, show login view
-    }
-})();
-
-async function initApp() {
-    await loadDates();
-    renderMainView();
-}
-
-async function loadDates() {
-    const { data, error } = await sbClient.from('date_ideas').select('*');
-    dates = data;
-    console.log(data)
-}
-
-function renderMainView() {
-    let dateCards = dates.map((date, index) => `
+export async function renderMainView() {
+    dates = await loadDates();
+    const dateCards = dates.map((date, index) => `
         <div class="carousel-item ${index === 0 ? 'active' : ''}">
             <div class="card shadow-lg mx-auto" style="width: 300px;">
                 <div class="card-body">
                     <h5 class="card-title">${date.ideaTitle}</h5>
                     <p class="card-text">${date.description}</p>
-
                 </div>
             </div>
         </div>
     `).join("");
 
-    let html = `
+    app.innerHTML = `
     <div class="container mt-5">
         <div id="dateCarousel" class="carousel slide">
             <div class="carousel-inner">${dateCards}</div>
@@ -101,18 +74,22 @@ function renderMainView() {
             </button>
         </div>
         <div class="d-flex justify-content-center gap-3 mt-4 ">
-            <button class="btn btn-lg btn-success" onclick="addNewView()">Hatch scheme</button>
-            <button class="btn btn-lg btn-warning" onclick="ShowAllDates()">View treasury!</button>
+            <button id="addDateBtn" class="btn btn-lg btn-success">Concoct a Caper</button>
+            <button id="viewAllDatesBtn" class="btn btn-lg btn-warning">Browse the Loot</button>
         </div>
     </div>
     `;
-    app.innerHTML = html;
+
+    document.getElementById('addDateBtn').addEventListener('click', renderAddDateView);
+    document.getElementById('viewAllDatesBtn').addEventListener('click', renderAllDatesView);
+
 }
 
-function addNewView() {
+export function renderAddDateView() {
     const randomElement = dateIdeasPlaceholders[Math.floor(Math.random() * dateIdeasPlaceholders.length)];
 
-    let html = `
+    const app = document.getElementById('app');
+    app.innerHTML = `
     <div class="container mt-5">
         <div class="card shadow-lg mx-auto" style="width: 400px;">
             <div class="card-body">
@@ -127,37 +104,26 @@ function addNewView() {
                         <textarea class="form-control" id="dateDescription" rows="3" placeholder="${randomElement.description}" required></textarea>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-outline-success btn-lg">Add to vault</button>
+                        <button type="submit" class="btn btn-outline-success btn-lg">Add to Vault</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     `;
-    app.innerHTML = html;
 
     document.getElementById('addDateForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('dateTitle').value;
         const description = document.getElementById('dateDescription').value;
-        await NewDate(title, description);
-        await loadDates();  // Reload dates after adding a new one
-        renderMainView();
+        await addDateIdea(title, description);
+        await renderMainView();  // Return to main view after adding the date idea
     });
 }
 
-async function NewDate(title, desc) {
-    const { data, error } = await sbClient.from('date_ideas').insert({
-        done: false,
-        ideaTitle: title,
-        votedBy: '',
-        description: desc
-    });
-    if (error) console.error("Error adding new date:", error);
-}
 
-function loginView() {
-    let html = `
+export function renderLoginView() {
+    app.innerHTML = `
     <div class="container mt-5" style="max-width: 400px;">
         <div class="card shadow-lg">
             <div class="card-body">
@@ -179,65 +145,28 @@ function loginView() {
         </div>
     </div>
     `;
-    app.innerHTML = html;
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        await login(email, password);
+        const { user, error } = await login(email, password);
+        if (user) renderMainView();
+        else console.error("Login failed:", error);
     });
 }
 
-async function login(email, password) {
-    const { data, error } = await sbClient.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
-    if (data.user) {
-        saveSessionToStorage(data.session);  // Save the session to localStorage
-        await initApp();  // Initialize the app after a successful login
-    } else {
-        console.error("Login failed:", error);
-        loginView();
-    }
-}
-
-// Session Management
-function saveSessionToStorage(session) {
-    localStorage.setItem('sbSession', JSON.stringify(session));
-}
-
-function getSessionFromStorage() {
-    const session = localStorage.getItem('sbSession');
-    return session ? JSON.parse(session) : null;
-}
-
-function clearSession() {
-    localStorage.removeItem('sbSession');
-}
-
-// Logout (add this function to trigger a logout if needed)
-async function logout() {
-    await sbClient.auth.signOut();
-    clearSession();
-    loginView();
-}
-
-function ShowAllDates() {
-    let dateCards = dates.map((date) => `
+export function renderAllDatesView() {
+    const dateCards = dates.map((date) => `
         <div class="card shadow-lg my-3">
             <div class="card-body">
                 <h5 class="card-title">${date.ideaTitle}</h5>
                 <p class="card-text">${date.description}</p>
-                <div class="d-flex justify-content-end gap-2">
-
-                </div>
             </div>
         </div>
     `).join("");
 
-    let html = `
+    app.innerHTML = `
     <div class="container mt-5">
         <h2 class="text-center mb-4">All Date Ideas</h2>
         <div class="list-group">${dateCards}</div>
@@ -246,6 +175,4 @@ function ShowAllDates() {
         </div>
     </div>
     `;
-
-    app.innerHTML = html;
 }
