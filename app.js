@@ -2,13 +2,9 @@
 import { renderMainView, renderLoginView, renderAddDateView, renderAllDatesView } from './views.js';
 import { restoreSession } from './auth.js';
 
-const demoMode = window.location.pathname.includes('/demo');
-
 
 (async function init() {
-    if (demoMode) {
-       renderMainView(true)
-    }else{
+
         const { user, error } = await restoreSession();
         if (user) {
             renderMainView();
@@ -18,5 +14,4 @@ const demoMode = window.location.pathname.includes('/demo');
             renderLoginView();
         }
 
-    }
 })();

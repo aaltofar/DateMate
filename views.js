@@ -145,6 +145,7 @@ export function renderLoginView() {
     </div>
     </div>
     </div>
+    <button id="demoBtn" class="btn btn-primary" style="position: absolute; bottom: 0; right: 0; opacity: 0.4">Demo mode</button>
     `;
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -155,6 +156,10 @@ export function renderLoginView() {
         if (user) renderMainView();
         else console.error("Login failed:", error);
     });
+
+    document.getElementById('demoBtn').addEventListener('click', () => {
+        renderMainView(true)
+    })
 }
 
 export function renderAllDatesView() {
