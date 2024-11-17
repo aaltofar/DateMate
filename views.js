@@ -1,4 +1,3 @@
-// views.js
 import { loadDates, addDateIdea } from './repository.js';
 import { login, clearSession, restoreSession } from './auth.js';
 
@@ -74,8 +73,8 @@ export async function renderMainView() {
             </button>
         </div>
         <div class="d-flex justify-content-center gap-3 mt-4 ">
-            <button id="addDateBtn" class="btn btn-lg btn-success">Concoct a Caper</button>
-            <button id="viewAllDatesBtn" class="btn btn-lg btn-warning">Browse the Loot</button>
+            <button id="addDateBtn" class="btn btn-lg btn-success">Plan mischief</button>
+            <button id="viewAllDatesBtn" class="btn btn-lg btn-warning">Browse the vault</button>
         </div>
     </div>
     `;
@@ -91,24 +90,24 @@ export function renderAddDateView() {
     const app = document.getElementById('app');
     app.innerHTML = `
     <div class="container mt-5">
-        <div class="card shadow-lg mx-auto" style="width: 400px;">
-            <div class="card-body">
-                <h5 class="card-title text-center">Add a New Date Idea</h5>
-                <form id="addDateForm">
-                    <div class="mb-3">
-                        <label for="dateTitle" class="card-text">Date title</label>
-                        <input type="text" class="form-control" id="dateTitle" placeholder="${randomElement.title}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dateDescription" class="card-text">Description</label>
-                        <textarea class="form-control" id="dateDescription" rows="3" placeholder="${randomElement.description}" required></textarea>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-outline-success btn-lg">Add to Vault</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="card shadow-lg mx-auto" style="width: 400px;">
+    <div class="card-body">
+    <h5 class="card-title text-center">Add a New Date Idea</h5>
+    <form id="addDateForm">
+    <div class="mb-3">
+    <label for="dateTitle" class="card-text">Date title</label>
+    <input type="text" class="form-control" id="dateTitle" placeholder="${randomElement.title}" required>
+    </div>
+    <div class="mb-3">
+    <label for="dateDescription" class="card-text">Description</label>
+    <textarea class="form-control" id="dateDescription" rows="3" placeholder="${randomElement.description}" required></textarea>
+    </div>
+    <div class="d-flex justify-content-center">
+    <button type="submit" class="btn btn-outline-success btn-lg">Add to Vault</button>
+    </div>
+    </form>
+    </div>
+    </div>
     </div>
     `;
 
@@ -117,7 +116,7 @@ export function renderAddDateView() {
         const title = document.getElementById('dateTitle').value;
         const description = document.getElementById('dateDescription').value;
         await addDateIdea(title, description);
-        await renderMainView();  // Return to main view after adding the date idea
+        await renderMainView();
     });
 }
 
@@ -125,24 +124,24 @@ export function renderAddDateView() {
 export function renderLoginView() {
     app.innerHTML = `
     <div class="container mt-5" style="max-width: 400px;">
-        <div class="card shadow-lg">
-            <div class="card-body">
-                <h5 class="card-title text-center">Login</h5>
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <label for="email" class="card-text">Email</label>
-                        <input type="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="card-text">Password</label>
-                        <input type="password" class="form-control" id="password" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success">Login</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="card shadow-lg">
+    <div class="card-body">
+    <h5 class="card-title text-center">Login</h5>
+    <form id="loginForm">
+    <div class="mb-3">
+    <label for="email" class="card-text">Email</label>
+    <input type="email" class="form-control" id="email" required>
+    </div>
+    <div class="mb-3">
+    <label for="password" class="card-text">Password</label>
+    <input type="password" class="form-control" id="password" required>
+    </div>
+    <div class="d-grid">
+    <button type="submit" class="btn btn-success">Login</button>
+    </div>
+    </form>
+    </div>
+    </div>
     </div>
     `;
 
@@ -158,21 +157,22 @@ export function renderLoginView() {
 
 export function renderAllDatesView() {
     const dateCards = dates.map((date) => `
-        <div class="card shadow-lg my-3">
-            <div class="card-body">
-                <h5 class="card-title">${date.ideaTitle}</h5>
-                <p class="card-text">${date.description}</p>
-            </div>
-        </div>
+    <div class="card shadow-lg my-3">
+    <div class="card-body">
+    <h5 class="card-title">${date.ideaTitle}</h5>
+    <p class="card-text">${date.description}</p>
+    </div>
+    </div>
     `).join("");
 
     app.innerHTML = `
     <div class="container mt-5">
-        <h2 class="text-center mb-4">All Date Ideas</h2>
-        <div class="list-group">${dateCards}</div>
-        <div class="d-flex justify-content-center mt-4">
-            <button class="btn btn-lg btn-primary" onclick="renderMainView()">Back to Main</button>
-        </div>
+    <h2 class="text-center mb-4">All Date Ideas</h2>
+    <div class="list-group">${dateCards}</div>
+    <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-lg btn-primary" id="backToMainBtn">Back to Main</button>
+    </div>
     </div>
     `;
+    document.getElementById('backToMainBtn').addEventListener('click', renderMainView);
 }
