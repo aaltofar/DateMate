@@ -1,7 +1,7 @@
 
 # DateMate
 **This is a personal project not intended for public use**
-- *I might expand it later, but right now it's just a nice little app I made for my partner*
+- *I might expand it later, but right now it's just a nice little app I made for my partner and I to have a place where we can store our date ideas*
 
 
 **DateMate** is a fun, quirky app that helps users brainstorm and organize creative date ideas. It features a database and authing for storing date ideas, a "Demo Mode" for trying out the app without an account, and various interactive views.
