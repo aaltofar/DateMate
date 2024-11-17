@@ -1,0 +1,86 @@
+/* Catppuccin Mocha Theme Colors */
+:root {
+    --catppuccin-mocha-bg: #1E1E2E; /* Background color */
+    --catppuccin-mocha-surface: #26233A; /* Surface/secondary background color */
+    --catppuccin-mocha-primary: #D5C4A1; /* Primary text color */
+    --catppuccin-mocha-secondary: #D8A0A1; /* Secondary text color */
+    --catppuccin-mocha-accent: #E8A2AF; /* Accent color (e.g., buttons, highlights) */
+    --catppuccin-mocha-muted: #6E5C64; /* Muted text or borders */
+    --catppuccin-mocha-border: #8C7B70; /* Border color */
+    --catppuccin-mocha-pink: #F2CDCD; /* Light pink */
+    --catppuccin-mocha-lavender: #C9A6E6; /* Lavender highlight */
+    --catppuccin-mocha-green: #A6D189; /* Soft green */
+    --catppuccin-mocha-blue: #89B4FA; /* Soft blue */
+    --catppuccin-mocha-yellow: #EED49F; /* Light yellow */
+    --catppuccin-mocha-red: #F38BA8; /* Light red */
+    --catppuccin-mocha-teal: #94E2D5; /* Teal accent */
+  }
+
+  /* Apply Catppuccin Mocha colors to Bootstrap components */
+  body {
+    background-color: var(--catppuccin-mocha-bg);
+    color: var(--catppuccin-mocha-lavender);
+    font-family: "Kanit", sans-serif;
+  }
+
+  header {
+    color: var(--catppuccin-mocha-lavender);
+  }
+
+  .card {
+    background-color: var(--catppuccin-mocha-surface);
+    border: 1px solid var(--catppuccin-mocha-lavender);
+        -webkit-box-shadow: 5px 5px 15px 5px #000000;
+        box-shadow: 5px 5px 15px 5px #000000;
+
+  }
+
+  .card-title {
+    color: var(--catppuccin-mocha-lavender);
+  }
+
+  .card-text {
+    color: var(--catppuccin-mocha-muted);
+  }
+
+  .btn-outline-success {
+    border-color: var(--catppuccin-mocha-green);
+    color: var(--catppuccin-mocha-green);
+  }
+
+  .btn-outline-success:hover {
+    background-color: var(--catppuccin-mocha-green);
+    color: var(--catppuccin-mocha-primary);
+  }
+
+  .btn-outline-danger {
+    border-color: var(--catppuccin-mocha-red);
+    color: var(--catppuccin-mocha-red);
+  }
+
+  .btn-outline-danger:hover {
+    background-color: var(--catppuccin-mocha-red);
+    color: var(--catppuccin-mocha-primary);
+  }
+
+  .btn-success {
+    background-color: var(--catppuccin-mocha-green);
+    border-color: var(--catppuccin-mocha-green);
+  }
+
+  .btn-primary {
+    background-color: var(--catppuccin-mocha-lavender);
+  }
+
+  .btn-success:hover {
+    background-color: var(--catppuccin-mocha-teal);
+  }
+
+  .btn-warning {
+    background-color: var(--catppuccin-mocha-yellow);
+    border-color: var(--catppuccin-mocha-yellow);
+  }
+
+  .btn-warning:hover {
+    background-color: var(--catppuccin-mocha-lavender);
+  }
