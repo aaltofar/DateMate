@@ -181,5 +181,8 @@ export function renderAllDatesView() {
     </div>
     </div>
     `;
-    document.getElementById('backToMainBtn').addEventListener('click', renderMainView);
+    document.getElementById('backToMainBtn').addEventListener('click', () => {
+        renderMainView(false)
+    }
+);
 }
