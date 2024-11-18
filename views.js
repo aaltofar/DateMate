@@ -97,11 +97,11 @@ export function renderAddDateView() {
     <form id="addDateForm">
     <div class="mb-3">
     <label for="dateTitle" class="card-text">Date title</label>
-    <input type="text" class="form-control" id="dateTitle" placeholder="${randomElement.title}" required>
+    <input type="text" class="form-control" id="dateTitle" placeholder="E.g ${randomElement.ideaTitle}" required>
     </div>
     <div class="mb-3">
     <label for="dateDescription" class="card-text">Description</label>
-    <textarea class="form-control" id="dateDescription" rows="3" placeholder="${randomElement.description}" required></textarea>
+    <textarea class="form-control" id="dateDescription" rows="3" placeholder="E.g ${randomElement.description}" required></textarea>
     </div>
     <div class="d-flex justify-content-center">
     <button type="submit" class="btn btn-outline-success btn-lg">Add to Vault</button>
