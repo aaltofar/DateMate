@@ -1,6 +1,7 @@
 
 # DateMate
 **This is a personal project not intended for public use**
+
 *If you want to implement it yourself:*
 - npm install
 - Make .env file with "VITE_SUPABASE_URL" and "VITE_SUPABASE_API_KEY"
