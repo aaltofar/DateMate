@@ -182,7 +182,7 @@ export function renderAllDatesView() {
     </div>
     `;
     document.getElementById('backToMainBtn').addEventListener('click', () => {
-        renderMainView(false)
+        renderMainView(demo)
     }
 );
 }
