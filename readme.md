@@ -1,7 +1,13 @@
 
 # DateMate
 **This is a personal project not intended for public use**
-- *I might expand it later, but right now it's just a nice little app I made for my partner and I to have a place where we can store our date ideas*
+
+*If you want to implement it yourself:*
+- npm install
+- Make .env file with "VITE_SUPABASE_URL" and "VITE_SUPABASE_API_KEY"
+- If deployting on GitHub Pages make Secrets in repo settings for your env variables from the line above.
+- Make users in Supabase auth
+- Done!
 
 
 **DateMate** is a fun, quirky app that helps users brainstorm and organize creative date ideas. It features a database and authing for storing date ideas, a "Demo Mode" for trying out the app without an account, and various interactive views.
